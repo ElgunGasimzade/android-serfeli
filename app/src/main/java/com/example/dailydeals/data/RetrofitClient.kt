@@ -10,7 +10,7 @@ import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
 
 object RetrofitClient {
-    private const val BASE_URL = "https://newbackjs.onrender.com/"
+    private const val BASE_URL = "https://api.serfeli.app/"
 
 
 
