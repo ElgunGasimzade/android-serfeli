@@ -1,0 +1,86 @@
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:checkKotlinGradlePluginConfigurationErrors
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :app:generateDebugResValues UP-TO-DATE
+> Task :app:mapDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :app:mergeDebugResources UP-TO-DATE
+> Task :app:packageDebugResources UP-TO-DATE
+> Task :app:parseDebugLocalResources UP-TO-DATE
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+> Task :app:processDebugMainManifest UP-TO-DATE
+> Task :app:processDebugManifest UP-TO-DATE
+> Task :app:processDebugManifestForPackage UP-TO-DATE
+> Task :app:processDebugResources UP-TO-DATE
+> Task :app:javaPreCompileDebug UP-TO-DATE
+> Task :app:mergeDebugShaders UP-TO-DATE
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets UP-TO-DATE
+> Task :app:compressDebugAssets UP-TO-DATE
+> Task :app:checkDebugDuplicateClasses UP-TO-DATE
+> Task :app:desugarDebugFileDependencies UP-TO-DATE
+> Task :app:mergeExtDexDebug UP-TO-DATE
+> Task :app:mergeLibDexDebug UP-TO-DATE
+> Task :app:mergeDebugJniLibFolders UP-TO-DATE
+> Task :app:mergeDebugNativeLibs NO-SOURCE
+> Task :app:stripDebugDebugSymbols NO-SOURCE
+> Task :app:validateSigningDebug UP-TO-DATE
+> Task :app:writeDebugAppMetadata UP-TO-DATE
+> Task :app:writeDebugSigningConfigVersions UP-TO-DATE
+
+> Task :app:compileDebugKotlin
+w: file:///Users/elgunqasimzade/Downloads/daily-deals-export/screens/DailyDealsApp/app/src/main/java/com/example/dailydeals/data/AuthService.kt:107:26 Variable 'newSession' is never used
+w: file:///Users/elgunqasimzade/Downloads/daily-deals-export/screens/DailyDealsApp/app/src/main/java/com/example/dailydeals/data/LocationService.kt:41:22 This declaration overrides deprecated member but not marked as deprecated itself. Please add @Deprecated annotation or suppress. See https://youtrack.jetbrains.com/issue/KT-47902 for details
+w: file:///Users/elgunqasimzade/Downloads/daily-deals-export/screens/DailyDealsApp/app/src/main/java/com/example/dailydeals/data/MockApiService.kt:8:9 Parameter 'page' is never used
+w: file:///Users/elgunqasimzade/Downloads/daily-deals-export/screens/DailyDealsApp/app/src/main/java/com/example/dailydeals/data/MockApiService.kt:9:9 Parameter 'limit' is never used
+w: file:///Users/elgunqasimzade/Downloads/daily-deals-export/screens/DailyDealsApp/app/src/main/java/com/example/dailydeals/data/MockApiService.kt:10:9 Parameter 'sortBy' is never used
+w: file:///Users/elgunqasimzade/Downloads/daily-deals-export/screens/DailyDealsApp/app/src/main/java/com/example/dailydeals/data/MockApiService.kt:11:9 Parameter 'storeFilter' is never used
+w: file:///Users/elgunqasimzade/Downloads/daily-deals-export/screens/DailyDealsApp/app/src/main/java/com/example/dailydeals/data/MockApiService.kt:20:34 Unnecessary non-null assertion (!!) on a non-null receiver of type String
+w: file:///Users/elgunqasimzade/Downloads/daily-deals-export/screens/DailyDealsApp/app/src/main/java/com/example/dailydeals/data/MockApiService.kt:39:47 'create(MediaType?, String): RequestBody' is deprecated. Moved to extension function. Put the 'content' argument first to fix Java
+w: file:///Users/elgunqasimzade/Downloads/daily-deals-export/screens/DailyDealsApp/app/src/main/java/com/example/dailydeals/data/RouteCacheService.kt:39:32 Parameter 'forceRefresh' is never used
+w: file:///Users/elgunqasimzade/Downloads/daily-deals-export/screens/DailyDealsApp/app/src/main/java/com/example/dailydeals/data/SessionManager.kt:66:24 Unnecessary non-null assertion (!!) on a non-null receiver of type String
+w: file:///Users/elgunqasimzade/Downloads/daily-deals-export/screens/DailyDealsApp/app/src/main/java/com/example/dailydeals/ui/screens/BrandSelectionScreen.kt:176:25 Variable 'selectedBrandItems' is never used
+w: file:///Users/elgunqasimzade/Downloads/daily-deals-export/screens/DailyDealsApp/app/src/main/java/com/example/dailydeals/ui/screens/BrandSelectionScreen.kt:328:40 Unnecessary safe call on a non-null receiver of type List<BrandGroup>?
+w: file:///Users/elgunqasimzade/Downloads/daily-deals-export/screens/DailyDealsApp/app/src/main/java/com/example/dailydeals/ui/screens/HomeScreen.kt:64:9 Variable 'context' is never used
+w: file:///Users/elgunqasimzade/Downloads/daily-deals-export/screens/DailyDealsApp/app/src/main/java/com/example/dailydeals/ui/screens/PFMScreen.kt:47:5 Parameter 'onNavigate' is never used
+w: file:///Users/elgunqasimzade/Downloads/daily-deals-export/screens/DailyDealsApp/app/src/main/java/com/example/dailydeals/ui/screens/ProductDetailScreen.kt:43:5 Parameter 'productId' is never used
+w: file:///Users/elgunqasimzade/Downloads/daily-deals-export/screens/DailyDealsApp/app/src/main/java/com/example/dailydeals/ui/screens/ProductDetailScreen.kt:141:13 Parameter 'paddingValues' is never used, could be renamed to _
+w: file:///Users/elgunqasimzade/Downloads/daily-deals-export/screens/DailyDealsApp/app/src/main/java/com/example/dailydeals/ui/screens/ProductDetailScreen.kt:308:36 Unnecessary non-null assertion (!!) on a non-null receiver of type String
+w: file:///Users/elgunqasimzade/Downloads/daily-deals-export/screens/DailyDealsApp/app/src/main/java/com/example/dailydeals/ui/screens/ProfileScreen.kt:36:5 Parameter 'onNavigateBack' is never used
+w: file:///Users/elgunqasimzade/Downloads/daily-deals-export/screens/DailyDealsApp/app/src/main/java/com/example/dailydeals/ui/screens/ProfileScreen.kt:37:5 Parameter 'onNavigate' is never used
+w: file:///Users/elgunqasimzade/Downloads/daily-deals-export/screens/DailyDealsApp/app/src/main/java/com/example/dailydeals/ui/screens/ProfileScreen.kt:54:9 Variable 'isSaving' is never used
+w: file:///Users/elgunqasimzade/Downloads/daily-deals-export/screens/DailyDealsApp/app/src/main/java/com/example/dailydeals/ui/screens/ProfileScreen.kt:55:9 Variable 'snackbarHostState' is never used
+w: file:///Users/elgunqasimzade/Downloads/daily-deals-export/screens/DailyDealsApp/app/src/main/java/com/example/dailydeals/ui/screens/ScanCaptureScreen.kt:43:5 Parameter 'onNavigate' is never used
+w: file:///Users/elgunqasimzade/Downloads/daily-deals-export/screens/DailyDealsApp/app/src/main/java/com/example/dailydeals/ui/screens/ShoppingPlanScreen.kt:116:43 Parameter 'index' is never used, could be renamed to _
+w: file:///Users/elgunqasimzade/Downloads/daily-deals-export/screens/DailyDealsApp/app/src/main/java/com/example/dailydeals/ui/screens/ShoppingPlanScreen.kt:174:76 Unnecessary non-null assertion (!!) on a non-null receiver of type RouteDetails
+w: file:///Users/elgunqasimzade/Downloads/daily-deals-export/screens/DailyDealsApp/app/src/main/java/com/example/dailydeals/ui/screens/ShoppingRouteScreen.kt:153:38 Unnecessary safe call on a non-null receiver of type RouteDetails?
+w: file:///Users/elgunqasimzade/Downloads/daily-deals-export/screens/DailyDealsApp/app/src/main/java/com/example/dailydeals/ui/screens/ShoppingRouteScreen.kt:164:38 Unnecessary non-null assertion (!!) on a non-null receiver of type RouteDetails
+w: file:///Users/elgunqasimzade/Downloads/daily-deals-export/screens/DailyDealsApp/app/src/main/java/com/example/dailydeals/ui/screens/ShoppingRouteScreen.kt:297:9 Variable 'storeColor' is never used
+w: file:///Users/elgunqasimzade/Downloads/daily-deals-export/screens/DailyDealsApp/app/src/main/java/com/example/dailydeals/ui/screens/WatchlistScreen.kt:56:5 Parameter 'onNavigate' is never used
+w: file:///Users/elgunqasimzade/Downloads/daily-deals-export/screens/DailyDealsApp/app/src/main/java/com/example/dailydeals/ui/screens/WatchlistScreen.kt:57:5 Parameter 'onNavigateToSelection' is never used
+w: file:///Users/elgunqasimzade/Downloads/daily-deals-export/screens/DailyDealsApp/app/src/main/java/com/example/dailydeals/ui/screens/WatchlistScreen.kt:75:9 Variable 'suggestions' is never used
+w: file:///Users/elgunqasimzade/Downloads/daily-deals-export/screens/DailyDealsApp/app/src/main/java/com/example/dailydeals/ui/screens/WatchlistScreen.kt:76:9 Variable 'isSearching' is never used
+
+> Task :app:compileDebugJavaWithJavac NO-SOURCE
+> Task :app:processDebugJavaRes UP-TO-DATE
+> Task :app:mergeDebugJavaResource UP-TO-DATE
+> Task :app:dexBuilderDebug
+> Task :app:mergeProjectDexDebug
+> Task :app:packageDebug
+> Task :app:createDebugApkListingFileRedirect
+> Task :app:assembleDebug
+
+[Incubating] Problems report is available at: file:///Users/elgunqasimzade/Downloads/daily-deals-export/screens/DailyDealsApp/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.0-milestone-1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 16s
+32 actionable tasks: 6 executed, 26 up-to-date

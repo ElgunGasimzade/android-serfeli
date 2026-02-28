@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "com.example.dailydeals.app-merged_res-53:/drawable_logo.png.flat",
+        "source": "com.example.dailydeals.app-main-55:/drawable/logo.png"
+    },
+    {
+        "merged": "com.example.dailydeals.app-merged_res-53:/mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "com.example.dailydeals.app-main-55:/mipmap-xxhdpi/ic_launcher.png"
+    }
+]
