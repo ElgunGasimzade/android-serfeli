@@ -4,15 +4,15 @@ plugins {
 }
 
 android {
-    namespace = "com.example.dailydeals"
+    namespace = "app.serfeli"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.dailydeals"
+        applicationId = "app.serfeli"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
