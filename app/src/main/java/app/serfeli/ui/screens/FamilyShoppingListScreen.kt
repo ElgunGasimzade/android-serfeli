@@ -172,9 +172,9 @@ fun FamilyShoppingListScreen(
                     
                     // The list body
                     items(items, key = { it.id }) { item ->
-                        val dismissState = rememberDismissState(
+                        val dismissState = rememberSwipeToDismissBoxState(
                             confirmValueChange = { dismissValue ->
-                                if (dismissValue == DismissValue.DismissedToStart) {
+                                if (dismissValue == SwipeToDismissBoxValue.EndToStart) {
                                     scope.launch {
                                         try {
                                             apiService.deleteShoppingListItem(item.id, userId)
@@ -190,13 +190,11 @@ fun FamilyShoppingListScreen(
                             }
                         )
 
-                        SwipeToDismiss(
+                        SwipeToDismissBox(
                             state = dismissState,
-                            background = {
-                                val color = when (dismissState.targetValue) {
-                                    DismissValue.DismissedToStart -> Color.Red
-                                    else -> Color.Transparent
-                                }
+                            enableDismissFromStartToEnd = false,
+                            backgroundContent = {
+                                val color = if (dismissState.targetValue == SwipeToDismissBoxValue.EndToStart) Color.Red else Color.Transparent
                                 Box(
                                     modifier = Modifier
                                         .fillMaxSize()
@@ -204,35 +202,52 @@ fun FamilyShoppingListScreen(
                                         .padding(horizontal = 20.dp),
                                     contentAlignment = Alignment.CenterEnd
                                 ) {
-                                    if (dismissState.targetValue == DismissValue.DismissedToStart) {
+                                    if (dismissState.targetValue == SwipeToDismissBoxValue.EndToStart) {
                                         Icon(Icons.Default.Delete, contentDescription = "Delete", tint = Color.White)
                                     }
                                 }
-                            },
-                            dismissContent = {
-                                FamilyShoppingItemCard(
-                                    item = item,
-                                    onToggleStatus = {
-                                        scope.launch {
-                                            try {
-                                                val newStatus = if (item.status == "pending") "purchased" else "pending"
-                                                val copy = items.toMutableList()
-                                                val index = copy.indexOfFirst { it.id == item.id }
-                                                if (index != -1) {
-                                                    copy[index] = item.copy(status = newStatus)
-                                                    items = copy // Optimistic update
-                                                }
-                                                apiService.updateShoppingListItem(item.id, UpdateFamilyItemRequest(userId = userId, status = newStatus))
-                                            } catch (e: Exception) {
-                                                e.printStackTrace()
-                                                loadItems() // Revert on error
+                            }
+                        ) {
+                            FamilyShoppingItemCard(
+                                item = item,
+                                onToggleStatus = {
+                                    scope.launch {
+                                        try {
+                                            val newStatus = if (item.status == "pending") "purchased" else "pending"
+                                            val copy = items.toMutableList()
+                                            val index = copy.indexOfFirst { it.id == item.id }
+                                            if (index != -1) {
+                                                copy[index] = item.copy(status = newStatus)
+                                                items = copy
                                             }
+                                            apiService.updateShoppingListItem(item.id, UpdateFamilyItemRequest(userId = userId, status = newStatus))
+                                        } catch (e: Exception) {
+                                            e.printStackTrace()
+                                            loadItems()
                                         }
-                                    },
-                                    onIncrement = {
+                                    }
+                                },
+                                onIncrement = {
+                                    scope.launch {
+                                        try {
+                                            val newQuantity = item.quantity + 1
+                                            val copy = items.toMutableList()
+                                            val index = copy.indexOfFirst { it.id == item.id }
+                                            if (index != -1) {
+                                                copy[index] = item.copy(quantity = newQuantity)
+                                                items = copy
+                                            }
+                                            apiService.updateShoppingListItem(item.id, UpdateFamilyItemRequest(userId = userId, quantity = newQuantity))
+                                        } catch (e: Exception) {
+                                            e.printStackTrace()
+                                        }
+                                    }
+                                },
+                                onDecrement = {
+                                    if (item.quantity > 1) {
                                         scope.launch {
                                             try {
-                                                val newQuantity = item.quantity + 1
+                                                val newQuantity = item.quantity - 1
                                                 val copy = items.toMutableList()
                                                 val index = copy.indexOfFirst { it.id == item.id }
                                                 if (index != -1) {
@@ -244,29 +259,10 @@ fun FamilyShoppingListScreen(
                                                 e.printStackTrace()
                                             }
                                         }
-                                    },
-                                    onDecrement = {
-                                        if (item.quantity > 1) {
-                                            scope.launch {
-                                                try {
-                                                    val newQuantity = item.quantity - 1
-                                                    val copy = items.toMutableList()
-                                                    val index = copy.indexOfFirst { it.id == item.id }
-                                                    if (index != -1) {
-                                                        copy[index] = item.copy(quantity = newQuantity)
-                                                        items = copy
-                                                    }
-                                                    apiService.updateShoppingListItem(item.id, UpdateFamilyItemRequest(userId = userId, quantity = newQuantity))
-                                                } catch (e: Exception) {
-                                                    e.printStackTrace()
-                                                }
-                                            }
-                                        }
                                     }
-                                )
-                            },
-                            directions = setOf(DismissDirection.EndToStart)
-                        )
+                                }
+                            )
+                        }
                     }
                 }
             }

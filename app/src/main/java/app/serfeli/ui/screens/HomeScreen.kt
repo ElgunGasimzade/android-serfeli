@@ -133,32 +133,14 @@ fun HomeScreen(
                     availableStores = (availableStores + newStores).distinctBy { it.name }
                 }
 
-                // 2. FILTERING (Client-side fallback)
-                var fetchedProducts = if (selectedStore != null) {
-                    response.products.filter { it.store == selectedStore }
-                } else {
-                    response.products
-                }
-                
-                // 3. SORTING (Client-side fallback/override)
-                fetchedProducts = when (selectedSort) {
-                    SortOption.PriceAsc -> fetchedProducts.sortedBy { it.price }
-                    SortOption.PriceDesc -> fetchedProducts.sortedByDescending { it.price }
-                    SortOption.DiscountPct -> fetchedProducts.sortedByDescending { it.discountPercent }
-                    SortOption.DiscountVal -> fetchedProducts.sortedByDescending { (it.originalPrice ?: 0.0) - it.price }
-                }
-
                 if (reload) {
-                    homeFeed = response
-                    products = fetchedProducts
+                    products = response.products
                 } else {
-                    products = products + fetchedProducts
+                    products = products + response.products
                 }
                 
                 if (response.products.isEmpty()) {
                     canLoadMore = false
-                } else {
-                    currentPage++
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

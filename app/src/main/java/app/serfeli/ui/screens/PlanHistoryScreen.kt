@@ -108,9 +108,9 @@ fun DismissibleHistoryCard(
     onClick: () -> Unit,
     onDelete: () -> Unit
 ) {
-    val dismissState = rememberDismissState(
+    val dismissState = rememberSwipeToDismissBoxState(
         confirmValueChange = {
-            if (it == DismissValue.DismissedToStart) {
+            if (it == SwipeToDismissBoxValue.EndToStart) {
                 onDelete()
                 true
             } else {
@@ -119,14 +119,15 @@ fun DismissibleHistoryCard(
         }
     )
 
-    SwipeToDismiss(
+    SwipeToDismissBox(
         state = dismissState,
-        background = {
-            val color = if (dismissState.targetValue == DismissValue.Default) Color.Transparent else Color.Red
+        enableDismissFromStartToEnd = false,
+        backgroundContent = {
+            val color = if (dismissState.targetValue == SwipeToDismissBoxValue.Settled) Color.Transparent else Color.Red
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(color, shape = RoundedCornerShape(16.dp)) 
+                    .background(color, shape = RoundedCornerShape(16.dp))
                     .padding(horizontal = 20.dp),
                 contentAlignment = Alignment.CenterEnd
             ) {
@@ -136,10 +137,8 @@ fun DismissibleHistoryCard(
                     tint = Color.White
                 )
             }
-        },
-        dismissContent = {
-            HistoryCard(item = item, onClick = onClick)
-        },
-        directions = setOf(DismissDirection.EndToStart)
-    )
+        }
+    ) {
+        HistoryCard(item = item, onClick = onClick)
+    }
 }

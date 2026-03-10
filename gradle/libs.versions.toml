@@ -1,13 +1,13 @@
 [versions]
-agp = "8.2.0"
+agp = "8.3.2"
 kotlin = "1.9.20"
-coreKtx = "1.12.0"
+coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
-lifecycleRuntimeKtx = "2.7.0"
-activityCompose = "1.8.2"
-composeBom = "2023.08.00"
+lifecycleRuntimeKtx = "2.8.7"
+activityCompose = "1.9.3"
+composeBom = "2024.09.00"
 navigationCompose = "2.7.6"
 coil = "2.5.0"
 iconify = "1.0.0" # Placeholder if needed, but we used standard icons

@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.update
 data class LocationState(
     val lat: Double? = null,
     val lon: Double? = null,
-    val range: Double = 1.0, // Default 1km
+    val range: Double = 2.0, // Default 2km
     val isEnabled: Boolean = true,
     val permissionGranted: Boolean = false
 )

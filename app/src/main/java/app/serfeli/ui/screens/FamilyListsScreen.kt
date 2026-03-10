@@ -115,9 +115,9 @@ fun FamilyListsScreen(
                         key = { it.id }
                     ) { list ->
                         // Swipe to delete wrapper
-                        val dismissState = rememberDismissState(
+                        val dismissState = rememberSwipeToDismissBoxState(
                             confirmValueChange = { dismissValue ->
-                                if (dismissValue == DismissValue.DismissedToStart) {
+                                if (dismissValue == SwipeToDismissBoxValue.EndToStart) {
                                     scope.launch {
                                         try {
                                             apiService.deleteShoppingList(list.id)
@@ -133,13 +133,11 @@ fun FamilyListsScreen(
                             }
                         )
 
-                        SwipeToDismiss(
+                        SwipeToDismissBox(
                             state = dismissState,
-                            background = {
-                                val color = when (dismissState.targetValue) {
-                                    DismissValue.DismissedToStart -> Color.Red
-                                    else -> Color.Transparent
-                                }
+                            enableDismissFromStartToEnd = false,
+                            backgroundContent = {
+                                val color = if (dismissState.targetValue == SwipeToDismissBoxValue.EndToStart) Color.Red else Color.Transparent
                                 Box(
                                     modifier = Modifier
                                         .fillMaxSize()
@@ -147,7 +145,7 @@ fun FamilyListsScreen(
                                         .padding(horizontal = 20.dp),
                                     contentAlignment = Alignment.CenterEnd
                                 ) {
-                                    if (dismissState.targetValue == DismissValue.DismissedToStart) {
+                                    if (dismissState.targetValue == SwipeToDismissBoxValue.EndToStart) {
                                         Icon(
                                             Icons.Default.Delete,
                                             contentDescription = "Delete",
@@ -155,15 +153,13 @@ fun FamilyListsScreen(
                                         )
                                     }
                                 }
-                            },
-                            dismissContent = {
-                                ListCard(
-                                    list = list,
-                                    onClick = { onNavigateToList(familyId, list.id) }
-                                )
-                            },
-                            directions = setOf(DismissDirection.EndToStart)
-                        )
+                            }
+                        ) {
+                            ListCard(
+                                list = list,
+                                onClick = { onNavigateToList(familyId, list.id) }
+                            )
+                        }
                     }
                 }
             }

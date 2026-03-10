@@ -33,9 +33,9 @@ class SessionManager(context: Context) {
             .apply()
     }
 
-    fun getLanguage(): String = prefs.getString(KEY_LANGUAGE, "en") ?: "en"
+    fun getLanguage(): String = prefs.getString(KEY_LANGUAGE, "az") ?: "az"
     fun isLocationEnabled(): Boolean = prefs.getBoolean(KEY_LOCATION_ENABLED, true)
-    fun getSearchRange(): Float = prefs.getFloat(KEY_SEARCH_RANGE, 5f)
+    fun getSearchRange(): Float = prefs.getFloat(KEY_SEARCH_RANGE, 2f)
 
     fun saveUserInfo(username: String, email: String, phone: String) {
         prefs.edit()
