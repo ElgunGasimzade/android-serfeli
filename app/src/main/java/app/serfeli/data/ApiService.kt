@@ -112,6 +112,12 @@ interface ApiService {
     @POST("api/v1/auth/device-login")
     suspend fun deviceLogin(@Body request: DeviceLoginRequest): AuthResponse
 
+    @POST("api/v1/notifications/register-token")
+    suspend fun registerFcmToken(@Body request: RegisterFcmTokenRequest): BasicResponse
+
+    @DELETE("api/v1/notifications/unregister-token")
+    suspend fun unregisterFcmToken(@retrofit2.http.Query("deviceId") deviceId: String): BasicResponse
+
     @GET("api/v1/auth/profile/{userId}")
     suspend fun getUserProfile(@Path("userId") userId: String): UserProfileResponse
 
@@ -143,6 +149,39 @@ interface ApiService {
 
     @DELETE("api/v1/family/shopping-lists/{listId}")
     suspend fun deleteShoppingList(@Path("listId") listId: Int): BasicResponse
+
+    // Notifications
+    @GET("api/v1/notifications")
+    suspend fun getNotifications(
+        @retrofit2.http.Query("userId") userId: String?,
+        @retrofit2.http.Query("deviceId") deviceId: String?,
+        @retrofit2.http.Query("page") page: Int = 1,
+        @retrofit2.http.Query("limit") limit: Int = 20
+    ): NotificationHistoryResponse
+
+    @GET("api/v1/notifications/unread-count")
+    suspend fun getUnreadNotificationCount(
+        @retrofit2.http.Query("userId") userId: String?,
+        @retrofit2.http.Query("deviceId") deviceId: String?
+    ): NotificationUnreadResponse
+
+    @PUT("api/v1/notifications/{id}/read")
+    suspend fun markNotificationAsRead(@Path("id") id: Int): BasicResponse
+
+    @DELETE("api/v1/notifications/{id}")
+    suspend fun deleteNotification(@Path("id") id: Int): BasicResponse
+    
+    @PUT("api/v1/notifications/read-all")
+    suspend fun markAllNotificationsAsRead(
+        @retrofit2.http.Query("userId") userId: String?,
+        @retrofit2.http.Query("deviceId") deviceId: String?
+    ): BasicResponse
+    
+    @DELETE("api/v1/notifications/delete-all")
+    suspend fun deleteAllNotifications(
+        @retrofit2.http.Query("userId") userId: String?,
+        @retrofit2.http.Query("deviceId") deviceId: String?
+    ): BasicResponse
 
     @GET("api/v1/family/shopping-list")
     suspend fun getShoppingList(

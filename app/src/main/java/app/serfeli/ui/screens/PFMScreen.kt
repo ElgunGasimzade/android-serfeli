@@ -47,7 +47,7 @@ fun PFMScreen(
     onNavigate: (String) -> Unit
 ) {
     val context = LocalContext.current
-    val routeService = remember { RouteCacheService(context) }
+    val routeService = remember { RouteCacheService.getInstance(context) }
     val history by routeService.history.collectAsState()
     val stats by routeService.lifetimeStats.collectAsState()
 

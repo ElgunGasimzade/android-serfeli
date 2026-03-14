@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.Sort
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -60,6 +61,7 @@ enum class SortOption(val id: String, val displayNameRes: Int) {
 
 @Composable
 fun HomeScreen(
+    unreadNotificationCount: Int = 0,
     onNavigate: (String) -> Unit
 ) {
     // ... (rest of the code unchanged until UI) ...
@@ -273,11 +275,33 @@ fun HomeScreen(
                         color = Color.Black
                     )
                     Spacer(modifier = Modifier.weight(1f))
+                    
+                    // Notification Bell Icon with Badge
+                    Box(modifier = Modifier.clickable { onNavigate("notifications") }) {
+                        Icon(
+                            imageVector = Icons.Default.Notifications,
+                            contentDescription = "Notifications",
+                            tint = Color.Gray,
+                            modifier = Modifier.size(30.dp).padding(4.dp)
+                        )
+                        if (unreadNotificationCount > 0) {
+                            Box(
+                                modifier = Modifier
+                                    .align(Alignment.TopEnd)
+                                    .offset(x = (-2).dp, y = 2.dp)
+                                    .size(10.dp)
+                                    .clip(androidx.compose.foundation.shape.CircleShape)
+                                    .background(Color.Red)
+                            )
+                        }
+                    }
+
                     IconButton(onClick = { onNavigate("profile") }) {
                         Icon(
                             imageVector = Icons.Default.Settings,
                             contentDescription = "Profile",
-                            tint = Color.Gray // Changed from Blue to Gray
+                            tint = Color.Gray,
+                            modifier = Modifier.size(30.dp)
                         )
                     }
                 }

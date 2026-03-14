@@ -34,7 +34,7 @@ fun TripSummaryScreen(
 ) {
     val context = androidx.compose.ui.platform.LocalContext.current
     // Use RouteCacheService for single source of truth
-    val routeService = remember { app.serfeli.data.RouteCacheService(context) }
+    val routeService = remember { app.serfeli.data.RouteCacheService.getInstance(context) }
     val history by routeService.history.collectAsState()
     val stats by routeService.lifetimeStats.collectAsState()
     

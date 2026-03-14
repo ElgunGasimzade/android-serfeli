@@ -104,7 +104,7 @@ fun ProductDetailScreen(
                                 isAdding = true
                                 scope.launch {
                                     try {
-                                        val routeService = RouteCacheService(context)
+                                        val routeService = RouteCacheService.getInstance(context)
                                         val planId = routeService.addItemToActivePlan(p)
                                         
                                         isAdding = false // Stop spinner immediately upon success/fail

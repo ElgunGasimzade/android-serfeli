@@ -11,20 +11,52 @@ import app.serfeli.model.MockData // Explicit import just in case, though .* sho
 // Let's verify MockData package declaration.
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.withContext
 import java.util.Date
 
-class RouteCacheService(private val context: Context) {
+class RouteCacheService private constructor(private val context: Context) {
+
+    companion object {
+        @Volatile private var INSTANCE: RouteCacheService? = null
+
+        fun getInstance(context: Context): RouteCacheService {
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE ?: RouteCacheService(context.applicationContext).also { INSTANCE = it }
+            }
+        }
+    }
 
     private val apiService = RetrofitClient.apiService
     private val sessionManager = SessionManager(context)
+    private val serviceScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     private val _history = MutableStateFlow<List<RouteHistoryItem>>(sessionManager.getHistory())
     val history: StateFlow<List<RouteHistoryItem>> = _history.asStateFlow()
+
+    val hasActivePlan: StateFlow<Boolean> = _history
+        .map { list -> list.any { it.status == "active" } }
+        .stateIn(
+            scope = serviceScope,
+            started = SharingStarted.Eagerly,
+            initialValue = false
+        )
+
+    val activePlanCount: StateFlow<Int> = _history
+        .map { list -> list.count { it.status == "active" } }
+        .stateIn(
+            scope = serviceScope,
+            started = SharingStarted.Eagerly,
+            initialValue = 0
+        )
 
     private val _lifetimeStats = MutableStateFlow(
         UserStats(

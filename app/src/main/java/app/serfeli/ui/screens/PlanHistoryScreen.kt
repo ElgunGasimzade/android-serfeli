@@ -29,7 +29,7 @@ fun PlanHistoryScreen(
     onNavigateToDetail: (String) -> Unit
 ) {
     val context = LocalContext.current
-    val routeService = remember { RouteCacheService(context) }
+    val routeService = remember { RouteCacheService.getInstance(context) }
     val history by routeService.history.collectAsState()
     val scope = rememberCoroutineScope()
 

@@ -28,7 +28,8 @@ import app.serfeli.ui.theme.SystemGray
 @Composable
 fun BottomNavBar(
     selectedItem: Int,
-    onNavigate: (String) -> Unit
+    onNavigate: (String) -> Unit,
+    planCount: Int = 0
 ) {
     // iOS TabView tab items and routes
     val items = listOf(
@@ -79,6 +80,7 @@ fun BottomNavBar(
                         icon = icons[index],
                         isSelected = isSelected,
                         color = color,
+                        planCount = if (index == 4) planCount else 0,
                         onClick = {
                             // Always allow navigation to home (index 0) even if selected
                             // This allows returning from detail screens
@@ -102,6 +104,7 @@ fun BottomNavItem(
     icon: ImageVector,
     isSelected: Boolean,
     color: Color,
+    planCount: Int = 0,
     onClick: () -> Unit
 ) {
     Column(
@@ -115,12 +118,29 @@ fun BottomNavItem(
             .padding(horizontal = 8.dp) // Touch target padding
             .fillMaxHeight()
     ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = label,
-            tint = color,
-            modifier = Modifier.size(26.dp) // iOS Icons are roughly 25-28pt
-        )
+        BadgedBox(
+            badge = {
+                if (planCount > 0) {
+                    Badge(
+                        containerColor = Color(0xFFFF3B30),
+                        contentColor = Color.White
+                    ) {
+                        Text(
+                            text = planCount.toString(),
+                            fontSize = 8.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+            }
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = label,
+                tint = color,
+                modifier = Modifier.size(28.dp)
+            )
+        }
         Spacer(modifier = Modifier.height(2.dp))
         Text(
             text = label,

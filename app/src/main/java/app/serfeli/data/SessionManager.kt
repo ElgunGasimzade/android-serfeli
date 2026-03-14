@@ -75,6 +75,7 @@ class SessionManager(context: Context) {
              // 1. Try to login with existing device ID
              val response = apiService.deviceLogin(app.serfeli.model.DeviceLoginRequest(deviceId))
              saveSession(response.token ?: "", response.user.id, response.isNewUser)
+             
              return GuestSession(response.token, response.user.id, response.isNewUser)
          } catch (e: Exception) {
              e.printStackTrace()
@@ -92,6 +93,7 @@ class SessionManager(context: Context) {
                 val response = apiService.deviceLogin(app.serfeli.model.DeviceLoginRequest(newDeviceId))
                 
                 saveSession(response.token ?: "", response.user.id, response.isNewUser)
+                
                 return GuestSession(response.token, response.user.id, response.isNewUser)
              } catch (e2: Exception) {
                  e2.printStackTrace()

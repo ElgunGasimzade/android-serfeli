@@ -45,7 +45,7 @@ fun ShoppingPlanScreen(
     val sessionManager = remember { app.serfeli.data.SessionManager(context) }
     var routeOptions by remember { mutableStateOf<List<app.serfeli.model.RouteOption>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
-    val routeService = remember { app.serfeli.data.RouteCacheService(context) }
+    val routeService = remember { app.serfeli.data.RouteCacheService.getInstance(context) }
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {

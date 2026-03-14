@@ -138,6 +138,31 @@ data class TripCompletionResponse(
     val tripId: String
 )
 
+// MARK: - Notifications
+data class NotificationItem(
+    val id: Int,
+    val title: String,
+    val body: String,
+    @com.google.gson.annotations.SerializedName("data_payload")
+    val dataPayload: Map<String, String>?,
+    @com.google.gson.annotations.SerializedName("is_read")
+    var isRead: Boolean,
+    @com.google.gson.annotations.SerializedName("created_at")
+    val createdAt: String
+)
+
+data class NotificationHistoryResponse(
+    val success: Boolean,
+    val data: List<NotificationItem>,
+    val page: Int,
+    val limit: Int
+)
+
+data class NotificationUnreadResponse(
+    val success: Boolean,
+    val count: Int
+)
+
 data class TripSummary(
     val totalSavings: Double,
     val timeSpent: String,
@@ -182,6 +207,13 @@ data class UserStats(
 )
 
 data class DeviceLoginRequest(val deviceId: String)
+
+data class RegisterFcmTokenRequest(
+    val userId: String,
+    val deviceId: String,
+    val fcmToken: String,
+    val platform: String = "android"
+)
 
 data class CreatePlanRequest(
     val userId: String,

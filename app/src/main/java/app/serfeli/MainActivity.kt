@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -40,7 +41,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import kotlinx.coroutines.launch
 
 import android.content.Context
+import android.util.Log
 import app.serfeli.ui.utils.LocaleHelper
+import com.google.firebase.messaging.FirebaseMessaging
+import android.os.Build
 
 object AppSession {
     var isFirstLaunch = true
@@ -120,23 +124,73 @@ fun DailyDealsApp() {
              sessionManager.createGuestSession()
         }
         
-        // Request Permissions on Launch if not granted
+        // Request Location Permissions & Notification Permission (Android 13+)
+        val permissionsToRequest = mutableListOf<String>()
         val fineLocation = androidx.core.content.ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION)
         val coarseLocation = androidx.core.content.ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION)
-        if (fineLocation != android.content.pm.PackageManager.PERMISSION_GRANTED && 
-            coarseLocation != android.content.pm.PackageManager.PERMISSION_GRANTED) {
-            locationPermissionLauncher.launch(
-                arrayOf(
-                    android.Manifest.permission.ACCESS_FINE_LOCATION,
-                    android.Manifest.permission.ACCESS_COARSE_LOCATION
-                )
-            )
+        
+        if (fineLocation != android.content.pm.PackageManager.PERMISSION_GRANTED) permissionsToRequest.add(android.Manifest.permission.ACCESS_FINE_LOCATION)
+        if (coarseLocation != android.content.pm.PackageManager.PERMISSION_GRANTED) permissionsToRequest.add(android.Manifest.permission.ACCESS_COARSE_LOCATION)
+        
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (androidx.core.content.ContextCompat.checkSelfPermission(context, android.Manifest.permission.POST_NOTIFICATIONS) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                permissionsToRequest.add(android.Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+
+        if (permissionsToRequest.isNotEmpty()) {
+            locationPermissionLauncher.launch(permissionsToRequest.toTypedArray())
+        }
+        
+        // Fetch and Sync FCM Token
+        if (sessionManager.isLoggedIn()) {
+            FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w("MainActivity", "Fetching FCM registration token failed", task.exception)
+                    return@addOnCompleteListener
+                }
+                val token = task.result
+                Log.d("MainActivity", "FCM Token on Launch: $token")
+                val userId = sessionManager.getUserId()
+                val deviceId = sessionManager.getDeviceId()
+                if (userId != null) {
+                    kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.IO).launch {
+                        try {
+                            app.serfeli.data.RetrofitClient.apiService.registerFcmToken(
+                                app.serfeli.model.RegisterFcmTokenRequest(
+                                    userId = userId,
+                                    deviceId = deviceId,
+                                    fcmToken = token,
+                                    platform = "android"
+                                )
+                            )
+                        } catch (e: Exception) {
+                            Log.e("MainActivity", "Failed to sync FCM Token on Launch", e)
+                        }
+                    }
+                }
+            }
         }
     }
-    
     // Determine which tab is selected based on current route
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+
+    // Notification Unread Count State
+    var unreadNotificationCount by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(0) }
+    
+    androidx.compose.runtime.LaunchedEffect(currentRoute) {
+        if (sessionManager.isLoggedIn() && currentRoute == "home") {
+            try {
+                val userId = sessionManager.getUserId()
+                val deviceId = sessionManager.getDeviceId()
+                val res = app.serfeli.data.RetrofitClient.apiService.getUnreadNotificationCount(userId, deviceId)
+                unreadNotificationCount = res.count
+            } catch (e: Exception) {
+                // Handle error
+            }
+        }
+    }
     
     // User requested Bottom Bar on ALL screens
     val showBottomBar = true 
@@ -157,8 +211,15 @@ fun DailyDealsApp() {
     var brandSelectionActionText by remember { androidx.compose.runtime.mutableStateOf("Start Shopping") }
 
     // RouteCache for "Add to Plan" logic
-    val routeCacheService = remember { app.serfeli.data.RouteCacheService(context) }
+    val routeCacheService = remember { app.serfeli.data.RouteCacheService.getInstance(context) }
     val scope = rememberCoroutineScope()
+    val hasActivePlan by routeCacheService.hasActivePlan.collectAsState()
+    val activePlanCount by routeCacheService.activePlanCount.collectAsState()
+
+    // Fetch plans on first load so the red dot is accurate before user visits Plans tab
+    androidx.compose.runtime.LaunchedEffect(Unit) {
+        routeCacheService.refreshHistory()
+    }
 
     CompositionLocalProvider(
         LocalLocationService provides locationService,
@@ -194,9 +255,10 @@ fun DailyDealsApp() {
                             if (route == "pfm" && currentRoute == "pfm") {
                                  // Scroll to top or refresh?
                             } else {
-                                onNavigateToTab(route) 
+                                onNavigateToTab(route)
                             }
-                        }
+                        },
+                        planCount = activePlanCount
                     )
                 }
             }
@@ -210,6 +272,7 @@ fun DailyDealsApp() {
         ) {
             composable("home") {
                 HomeScreen(
+                    unreadNotificationCount = unreadNotificationCount,
                     onNavigate = { route ->
                         if (route.startsWith("product_detail")) {
                             navController.navigate(route)
@@ -259,6 +322,12 @@ fun DailyDealsApp() {
                 ProfileScreen(
                     onNavigateBack = { navController.popBackStack() },
                     onNavigate = { route -> onNavigateToTab(route) }
+                )
+            }
+            
+            composable("notifications") {
+                app.serfeli.ui.screens.NotificationListScreen(
+                    onNavigateBack = { navController.popBackStack() }
                 )
             }
 

@@ -49,7 +49,7 @@ fun ShoppingRouteScreen(
     val mapSheetState = rememberModalBottomSheetState()
 
     val context = LocalContext.current
-    val routeService = remember { RouteCacheService(context) }
+    val routeService = remember { RouteCacheService.getInstance(context) }
     val scope = rememberCoroutineScope()
     
     // State
