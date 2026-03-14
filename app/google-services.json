@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "829632307444",
+    "project_id": "serfeli-5f168",
+    "storage_bucket": "serfeli-5f168.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:829632307444:android:9c70ff4da107923f6cbea1",
+        "android_client_info": {
+          "package_name": "app.serfeli"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxHTA0ep1pOesT9cl75LH7RtmgcULrcAg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
